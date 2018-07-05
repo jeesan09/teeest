@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Poly technique</title>
+	<meta name="description" content="Fullscreen Pageflip Layout with BookBlock" />
+	<meta name="keywords" content="fullscreen pageflip, booklet, layout, bookblock, jquery plugin, flipboard layout, sidebar menu" />
+	<meta name="author" content="Codrops" />
+	<link rel="shortcut icon" href="../favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/jquery.jscrollpane.custom.css" />
+	<link rel="stylesheet" type="text/css" href="css/bookblock.css" />
+	<link rel="stylesheet" type="text/css" href="css/custom.css" />
+	<link href="css/My_toolTips.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+	<!--<link rel="stylesheet" type="text/css" href="css/magnific-popup.min.css" />-->
+	<!--<link href="css/font-awesome.min.css">-->
+	<link rel="stylesheet" href="css/jquery.postitall.css">
+	<style>
+		b { font-weight: bold;font-size: 16px;  }
+		#myImg {
+			border-radius: 5px;
+			cursor: pointer;
+			transition: 0.3s;
+		}
+
+		#myImg:hover {opacity: 0.7;}
+
+		/* The Modal (background) */
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1000; /* Sit on top */
+			padding-top: 100px; /* Location of the box */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+		}
+
+		/* Modal Content (image) */
+		.modal-content {
+			margin: auto;
+			display: block;
+			width: 80%;
+			max-width: 700px;
+		}
+
+		/* Caption of Modal Image */
+		#caption {
+			margin: auto;
+			display: block;
+			width: 80%;
+			max-width: 700px;
+			text-align: center;
+			color: #ccc;
+			padding: 10px 0;
+			height: 150px;
+		}
+
+		/* Add Animation */
+		.modal-content, #caption {
+			-webkit-animation-name: zoom;
+			-webkit-animation-duration: 0.6s;
+			animation-name: zoom;
+			animation-duration: 0.6s;
+		}
+
+		@-webkit-keyframes zoom {
+			from {-webkit-transform:scale(0)}
+			to {-webkit-transform:scale(1)}
+		}
+
+		@keyframes zoom {
+			from {transform:scale(0)}
+			to {transform:scale(1)}
+		}
+
+		/* The Close Button */
+		.closeh {
+			position: absolute;
+			top: 15px;
+			right: 35px;
+			color: #f1f1f1;
+			font-size: 40px;
+			font-weight: bold;
+			transition: 0.3s;
+		}
+		.close {
+			position: absolute;
+			top: 15px;
+			right: 35px;
+			color: #f1f1f1;
+			font-size: 40px;
+			font-weight: bold;
+			transition: 0.3s;
+		}
+
+		.closevid {
+			position: absolute;
+			top: 15px;
+			right: 35px;
+			color: #f1f1f1;
+			font-size: 40px;
+			font-weight: bold;
+			transition: 0.3s;
+		}
+
+		.closevid:hover,
+		.closevid:focus {
+			color: #bbb;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		.closeh:hover,
+		.closeh:focus {
+			color: #bbb;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: #bbb;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		.menu-header{
+			color: white;
+			padding-left: 18px;
+			font-weight: bolder;
+			font-size: 18px;
+		}
+
+		.main-menu, .sub-menu{
+			cursor: pointer;
+			padding: 15px;
+		}
+
+		.sub-menu{
+			display: none;
+		}
+
+		.sub-menu li{
+			display: none;
+		}
+
+		/* 100% Image Width on Smaller Screens */
+		@media only screen and (max-width: 700px){
+			.modal-content {
+				width: 100%;
+			}
+		}
+
+		.red{background:yellow;}
+
+		.highlighttext {
+			display:none;
+			width: 300px;
+			height:fit-content;
+			background-color: #555;
+			color: #fff;
+			border-radius: 6px;
+			line-height: 23px;
+			padding: 12px 10px;
+			position: absolute;
+			font-size: 13px;
+			bottom: 22px;
+			transition: opacity 1s;
+			opacity: 1;
+			z-index: 9999;
+			content: "";
+			top: 100%;
+			left: 50%;
+			margin-left: -5px;
+			border-width: 5px;
+			border-style: solid;
+			border-color: #555 transparent transparent transparent;
+		}
+
+		.part-toc {
+			list-style: none;
+			display: none;
+			padding: 10px;
+		}
+
+		.part-toc li a {
+			display: block;
+			color: #fff;
+			font-size: 1.1em;
+			line-height: 3.5;
+			padding: 0 20px;
+			cursor: pointer;
+			background: #f1103a;
+			border-bottom: 1px solid #dd1338;
+		}
+
+		.part-toc li a:hover,
+		.part-toc li.part-toc-current a{
+			background: #dd1338;
+		}
+
+	</style>
+	<script src="js/modernizr.custom.79639.js"></script>
+	<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+	<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script>
+
+</head>
+<body>
+<div id="container" class="container">
+	<i id="ajax-loader" class="fa fa-spinner fa-pulse fa-3x fa-fw" style="position: absolute; z-index: 1000; top: 23%; left: 45%; display: none;"></i>
+	<div class="menu-panel" style="overflow: auto;">
+		<h3>Poly technical Educational Portal</h3>
+		<ul id="menu-toc" class="menu-toc">
+			<ul class="menu-toc main-menu"> <span class="menu-header">Chapter 8</span>
+				<li class="part-toc"><a href="#" item-no="1">Page 136</a></li>
+				<ul class="menu-toc sub-menu"> <span class="menu-header">Animation</span>
+					<li><a href="#" item-no="1">সার্কিট ব্রেকারের সংজ্ঞা</a></li>
+					<li><a href="#" item-no="1">সার্কিট ব্রেকার পরিচালনার মূলনীতি এবং এর কার্যপ্রণালি</a></li>
+					<li><a href="#" item-no="5">প্লেন ব্রেক অয়েল টাইপ সার্কিট ব্রেকারের কার্যপ্রণালী </a></li>
+					<li><a href="#" item-no="6">অয়েল সার্কিট ব্রেকারের কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="8">স্মল অয়েল সার্কিট ব্রেকারের কার্যপ্রণালী</a></li>
+					<!--<li><a href="#" item-no="10">এয়ার ব্লাস্ট সার্কিট ব্রেকারের কার্যপ্রণালী</a></li>-->
+					<li><a href="#" item-no="11">সালফার হেক্সাফ্লোরাইড সার্কিট ব্রেকারের কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="12">ভ্যাকুয়াম সার্কিট ব্রেকারের কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="13">এয়ার সার্কিট ব্রেকারের সাথে অয়েল সার্কিট ব্রেকারের তুলনা</a></li>
+					<li><a href="#" item-no="21">মিনিয়েচার সার্কিট ব্রেকারের কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="22">অটোমেটিক রিক্লোজার বা অটো-রিক্লোজার</a></li>
+					<li><a href="#" item-no="24">আইসোলেটরের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="24">সার্কিট ব্রেকার ও আইসোলেটরের মধ্যে পার্থক্য</a></li>
+				</ul>
+				<ul class="menu-toc sub-menu"> <span class="menu-header">Audio</span>
+					<li><a href="#" item-no="6">সিঙ্গেল ব্রেক অয়েল সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="7">ডাবল ব্রেক অয়েল সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="16">পোল সংখ্যা বা ফেজ সংখ্যা </a></li>
+					<li><a href="#" item-no="16">রেটেড ভোল্টেজ  </a></li>
+					<li><a href="#" item-no="16">নরমাল কারেন্ট রেটিং </a></li>
+					<li><a href="#" item-no="16">অপারেটিং ডিউটি </a></li>
+				</ul>
+				<ul class="menu-toc sub-menu"> <span class="menu-header">Interactive Image</span>
+					<li><a href="#" item-no="1">চিত্র- ৮.১ : সিটি রিলে ও সার্কিট ব্রেকার সম্মিলিত ডায়াগ্রাম </a></li>
+					<li><a href="#" item-no="4">চিত্র- ৮.২ : আর্ককে বিভিক্তকরণ</a></li>
+					<li><a href="#" item-no="5">চিত্র- ৮.৩ : প্লেন ব্রেক অয়েল টাইপ সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="6">চিত্র- ৮.৪ : অয়েল সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="6">চচিত্র- ৮.৫ : সিঙ্গেল ব্রেক অয়েল সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="7">চিত্র- ৮.৬ : ডাবল ব্রেক অয়েল সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="8">চিত্র- ৮.৭ : স্মল অয়েল সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="10">চিত্র- ৮.৮ : এয়ার ব্লাস্ট সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="11">চিত্র- ৮.৯: সালফার হেক্সাফ্লোরাইড সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="12">চিত্র- ৮.১০ : ভ্যাকুয়াম সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="15">চিত্র- ৮.১১: ব্রেকিং ক্যাপাসিটি</a></li>
+					<li><a href="#" item-no="19">চিত্র- ৮.১২ : সিরিজ রেজিস্টর এবং রিয়াক্টর</a></li>
+					<li><a href="#" item-no="21">চিত্র- ৮.১৩: মিনিয়েচার সার্কিট ব্রেকার</a></li>
+					<li><a href="#" item-no="22">চিত্র: ৮.১৪ সিঙ্গেল শুট্ অটো রিক্লোজারের অপারেশন ক্রম</a></li>
+					<li><a href="#" item-no="22">চিত্র-৮.১৫ মাল্টি শুট অটো রিক্লোজারের অপারেশন ক্রম</a></li>
+					<li><a href="#" item-no="23">চিত্র- ৮.১৬ : গ্রামীণ ব্যবস্থায় অটো-রিক্লোজারের সাইকেল অপারেশন (12kV সার্কিট ব্রেকার)</a></li>
+					<li><a href="#" item-no="24">চিত্র-৮.১৭ : Isolator</a></li>
+				</ul>
+				<ul class="menu-toc sub-menu"> <span class="menu-header">Lecture Shoot</span>
+					<li><a href="#" item-no="3">আর্ক নির্বাপণ পদ্ধতি</a></li>
+					<li><a href="#" item-no="15">সার্কিট ব্রেকারের রেটিং</a></li>
+				</ul>
+			</ul>
+			<ul class="menu-toc main-menu"> <span class="menu-header">Chapter 9</span>
+				<li class="part-toc"><a href="#" item-no="27">Page 176</a></li>
+				<ul class="menu-toc sub-menu"> <span class="menu-header">Animation</span>
+					<li><a href="#" item-no="27">রিলে এর সংজ্ঞা</a></li>
+					<li><a href="#" item-no="27">রিলের শ্রেনীবিভাগ </a></li>
+					<li><a href="#" item-no="30">রিলের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="32">সলিনয়েড অ্যান্ড প্লাজার টাইপ রিলের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="33">ইন্ডাকশন টাইপ রিলের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="34">ইন্ডাকশন টাইপ রিভার্স পাওয়ার রিলের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="35">ডিরেকশনাল ওভারলোড রিলের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="36">থার্মাল রিলের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="37">বুখলজ রিলের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="38">ডিফারেনসিয়াল রিলের গঠন ও কার্যপ্রণালী</a></li>
+					<li><a href="#" item-no="39">কন্ট্রোল এবং রিলে প্যানেক বর্ণনা</a></li>
+				</ul>
+				<ul class="menu-toc sub-menu"> <span class="menu-header">Audio</span>
+					<li><a href="#" item-no="28">অ্যাট্রাক্টেড আর্মেচার টাইপ রিলে</a></li>
+					<li><a href="#" item-no="28">ইন্ডাকশন টাইপ রিলে</a></li>
+					<li><a href="#" item-no="29">মুভিং কয়েল টাইপ রিলে</a></li>
+					<li><a href="#" item-no="29">থার্মাল রিলে</a></li>
+					<li><a href="#" item-no="29">ডিরেকশনাল রিলে</a></li>
+					<li><a href="#" item-no="29">অ্যান্ডারভোল্টেজ রিলে</a></li>
+					<li><a href="#" item-no="29">পিক আপ লেভেল</a></li>
+					<li><a href="#" item-no="29">রিসেট লেভেল</a></li>
+					<li><a href="#" item-no="29">অপারেটিং টাইম</a></li>
+					<li><a href="#" item-no="29">ফল্ট ক্লিয়ারিং টাইম </a></li>
+					<li><a href="#" item-no="29">রিসেট টাইম</a></li>
+					<li><a href="#" item-no="29">প্রাইমারি রিলে</a></li>
+					<li><a href="#" item-no="29">সেকেন্ডারি রিলে</a></li>
+					<li><a href="#" item-no="29">প্রটেক্টিভ জোন</a></li>
+					<li><a href="#" item-no="29">প্লাগ সেটিং এবং টাইম সেটিং</a></li>
+					<li><a href="#" item-no="29">ইলেকট্রোম্যাগনেটিক রিলে</a></li>
+					<li><a href="#" item-no="29">ইন্ডাকশন রিলে</a></li>
+					<li><a href="#" item-no="29">ইলেকট্রো-থার্মাল রিলে</a></li>
+					<li><a href="#" item-no="29">স্ট্যাটিক রিলে</a></li>
+					<li><a href="#" item-no="30">ইলেকট্রোডাইনামিক রিলে</a></li>
+					<li><a href="#" item-no="30">আন্ডার ভোল্টেজ, আন্ডার কারেন্ট পাওয়ার রিলে</a></li>
+					<li><a href="#" item-no="30">ওভার ভোল্টেজ, ওভার কারেন্ট এবং ওভার পাওয়ার রিলে</a></li>
+					<li><a href="#" item-no="30">ডিরেকশনাল বা রিভার্স কারেন্ট রিলে</a></li>
+					<li><a href="#" item-no="30">ডিফারেন্সিয়াল রিলে</a></li>
+					<li><a href="#" item-no="30">ডিস্ট্যান্স রিলে</a></li>
+					<li><a href="#" item-no="30">ইনস্ট্যান্টেনিয়াস রিলে</a></li>
+					<li><a href="#" item-no="30">ডেফিনিট টাইম ল্যাগ রিলে</a></li>
+					<li><a href="#" item-no="30">ইনভার্স টাইম ল্যাগ রিলে</a></li>
+					<li><a href="#" item-no="30">ইনভার্স ডেফিনিট মিনিমাম টাইম ল্যাগ রিলে</a></li>
+					<li><a href="#" item-no="30">ইনভার্স ডেফিনিট মিনিমাম টাইম ল্যাগ রিলে</a></li>
+					<li><a href="#" item-no="30">প্রটেক্টিভ রিলের সংজ্ঞা</a></li>
+				</ul>
+				<ul class="menu-toc sub-menu"> <span class="menu-header">Interactive Image</span>
+					<li><a href="#" item-no="30">চিত্র- ৯.১ : রিলে সার্কিট</a></li>
+					<li><a href="#" item-no="31">চিত্র- ৯.২ : ডিসি শান্ট ট্রিপ সার্কিট</a></li>
+					<li><a href="#" item-no="32">চিত্র-৯.৩: সলিনয়েড অ্যান্ড প্লাজার টাইপ রিলে</a></li>
+					<li><a href="#" item-no="33">চিত্র-৯.৪: ইন্ডাকশন টাইপ রিলে</a></li>
+					<li><a href="#" item-no="34">চিত্র-৯.৫ : ইন্ডাকশন টাইপ রিভার্স পাওয়ার রিলে</a></li>
+					<li><a href="#" item-no="35">চিত্র-৯.৬ : ডিরেকশনাল ওভারলোড রিলে</a></li>
+					<li><a href="#" item-no="36">চিত্র-৯.৭: থার্মাল রিলে</a></li>
+					<li><a href="#" item-no="37">চিত্র-৯.৮ : বুখলজ রিলে</a></li>
+					<li><a href="#" item-no="38">চিত্র-৯.৯ : স্বাভাবিক অবস্থা</a></li>
+					<li><a href="#" item-no="38">চিত্র-৯.১০: অভ্যন্তরীণ ত্রুটি I<sub>1</sub> - I<sub>2</sub>   0</a></li>
+					<li><a href="#" item-no="38">চিত্র-৯.১১: ডিফারেনসিয়াল রিলের অপোজড ভোল্টেজ পদ্ধতি</a></li>
+					<li><a href="#" item-no="40">চিত্র-৯.১২ : কন্ট্রোল এবং রিলে প্যানেলের ব্লক ডায়াগ্রাম</a></li>
+					<li><a href="#" item-no="42">চিত্র-৯.১৩ : ইন্ডাকশন রিলের কারেন্ট বৈশিষ্ট্য সূচক রেখা</a></li>
+					<li><a href="#" item-no="43">চিত্র-৯.১৪ : ইন্ডাকশন রিলের কারেন্ট বৈশিষ্ট্য সূচক রেখা</a></li>
+				</ul>
+				<ul class="menu-toc sub-menu"> <span class="menu-header">Lecture Shoot</span>
+					<li><a href="#" item-no="41">রিলে রক্ষণাবেক্ষনের বিবেচ্য বিষয়সমূহ</a></li>
+				</ul>
+			</ul>
+			<ul class="menu-toc main-menu"> <span class="menu-header">Practical</span>
+				<li class="part-toc "><a href="#" item-no="44">Job no 2</a></li>
+				<li class="part-toc "><a href="#" item-no="46">Job no 3</a></li>
+				<li class="part-toc "><a href="#" item-no="48">Job no 4</a></li>
+			</ul>
+		</ul>
+	</div>
+
+	<div class="bb-custom-wrapper">
+		<div id="bb-bookblock" class="bb-bookblock">
+			<div class="bb-item" id="item1">
+				<div class="content">
+					<div class="scroller">
+						<span>
+							<p class="page-no">136</p>
+						</span>
+						
+						<h3>
+							সার্কিট ব্রেকারের গঠন ও কার্যপ্রণালী<br>
+							Understand the Concept of Construction and
+							Operation of Circuit Breaker
+						</h3>
+
+						<style>
+							.topic-title-no{position: absolute; padding: 5px;}
+							.topic-title {padding: 5px 8%;}
+							.c-align{text-align: center !important;}
+							.page-no{position: absolute;right: 0;}
+							span.mjx-chtml.MJXc-display {
+								display: inline;
+								padding: 0;
+								margin: 0;
+							}
+						</style>
+
+						<!-- Math formula -->
+						<!--<p>When $a \ne 0$, there are two solutions to \(ax^2 + bx + c = 0\) and they are-->
+						<!--$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$</p>-->
+						<!--<script>-->
+						<!--var math = document.getElementsByClassName("MathExample");-->
+						<!--MathJax.Hub.Queue(["Typeset",MathJax.Hub,math]);-->
+						<!--</script>-->
+
+						<div>
+							<h4 class="topic-title-no">৮.০</h4>
+							<h4 class="topic-title">ভূমিকা</h4>
+							<h4 class="topic-title"> (Introduction)</h4>
+							<p>সার্কিট ব্রেকার একটি নিয়ন্ত্রণ ও রক্ষণ যন্ত্রবিশেষ যা এটির সাথে সংযুক্ত সার্কিটে কোন ত্রুটি  (যেমন শর্ট সার্কিট আর্থ ফল্ট ইত্যাদি) দেখা দিলে স্বয়ংক্রিয়ভাবে ঐ সার্কিটকে সরবরাহ হতে বিচ্ছিন্ন করে দেয়, কিন্তু স্বয়ংক্রিয়ভাবে  সার্কিটকে সংযোগ করে না। সার্কিট ব্রেকার এর সাথে সংযুক্ত অন্যান্য উপাদানের (সিটি, রিলে ইত্যাদি) সহযোগিতায় কার্যসম্পাদন করে থাকে।
+							</p>
+						</div>
+
+
+
+						<div>
+							<h4 class="topic-title-no">৮.১</h4>
+							<h4 class="topic-title">সার্কিট ব্রেকারের সংজ্ঞা
+								<span class="tooltip_my">
+								<i class="fa fa-play-circle video-class" videosrc="videos/136/136-animn-21.mp4" style="font-size: 20px;" aria-hidden="true"></i>
+								<span class="tooltiptext">
+										click here to see the video
+								</span>
+							</span>
+							</h4>
+							<h4 class="topic-title">(Definition of a Circuit Breakers)</h4>
+							<p>সার্কিট ব্রেকার একটি নিয়ন্ত্রণ ও রক্ষণযন্ত্র বিশেষ যা সার্কিটের অস্বাভাবিক অবস্থায় (শর্ট সার্কিট, আর্থিং ইত্যাদি) ত্রুটিপূর্ণ অংশকে সরবরাহ হতে বিচ্ছিন্ন করে কিন্তু এটি সার্কিটকে অটোমেটিকভাবে সংযোগ করতে পারে না। সংযোগ করার জন্য বিভিন্ন উপায় অবলম্বন করা হয়ে থাকে। স্বাভাবিক অবস্থায় এর দ্বারা সুইচিং ডিভাইসের মতো সার্কিটকে সংযোগ অথবা বিচ্ছিন্ন করা যায়, অর্থাৎ স্বাভাবিক অবস্থায় এটি সাধারণ সুইচের মত কাজ করে।
+							</p>
+						</div>
+
+						<div>
+							<h4 class="topic-title-no">৮.২</h4>
+							<h4 class="topic-title">সার্কিট ব্রেকার পরিচালনার মূলনীতি এবং এর কার্যপ্রণালি</h4>
+							<h4 class="topic-title">(Describe the Principle of Operation of Circuit Breaker and Its Function)</h4>
+							<div>
+								<p> বৈদ্যুতিক ব্যবস্থায় একটি সার্কিট ব্রেকার যে সকল কার্যাবলি সম্পাদন করে থাকে তা হলো :<br>
+
+									(১)	স্বাভাবিক অবস্থায় কোনো একটি সার্কিটকে সংযোগ ও বিচ্ছিন্ন করার জন্য (ম্যানুয়ালি অথবা রিমোট কন্ট্রোলের মাধ্যম) সুইচের মতো কাজ করে।<br>
+									(২)	অস্বাভাবিক অবস্থায় স্বয়ংক্রিয়ভাবে ত্রুটিপূর্ণ অংশকে বিচ্ছিন্ন করে দেয়।<br>
+									(৩)	ত্রুটিমুক্ত হওয়ার পর ম্যানুয়ালি বা রিমোট কন্ট্রোলের মাধ্যমে সার্কিটকে পুনঃসংযোগ করে।<br>
+
+									<b>সার্কিট ব্রেকারের মূলনীতি :</b>
+									<br>একটি সার্কিট ব্রেকার fixed এবং moving কন্টাক্ট থাকে যাদেরকে Electronodes
+									বলে। পাওয়ার সিস্টেমে স্বাভাবিক অবস্থায়ে এই কন্টাক্টদ্বয় close অবস্থায় থাকে এবং ফল্টযুক্ত অবস্থায় Open থাকে। আবার প্রয়োজনে এই Contact রিমোট Control বা manually অপারেট করা যায়।
+									যখন কোন ফল্ট সংঘটিত হয়, তখন সার্কিট ব্রেকারের Contact অটোমেটিকভাবে খোলার সাথে সাথে আর্ক (Arc) উৎপন্ন হয়। এই Arc কে remove করতে সার্কিট ব্রেকার কর্তৃক ফল্ট remove করতে কিছু সময় লেগে যায়। অতএব সার্কিট ব্রেকারের প্রধান সমস্যা হলো দ্রুত সময়ে Arc extilguish করা।
+									<br>
+									<b>কার্যপ্রণালি :</b> নিম্নের চিত্রের সাহায্যে একটি সার্কিট ব্রেকারের কার্যপ্রণালি দেখানো হলো।
+								</p>
+							</div>
+
+						</div>
+
+
+						<p class="c-align">
+							<img class="img-class" src="images/136/136-img-b.jpg"
+								 srcb="images/136/136-img-a.jpg"
+								 alt="চিত্র- ৮.১: সিটি রিলে ও সার্কিট ব্রেকার সম্মিলিত ডায়াগ্রাম"
+								 min-width="300" height="200">
+						</p>
+						<p class="c-align">চিত্র- ৮.১: সিটি রিলে ও সার্কিট ব্রেকার সম্মিলিত ডায়াগ্রাম
+							<span class="tooltip_my">
+								<i class="fa fa-play-circle video-class" videosrc="videos/136/2.2 Animation-Principle of Circuit Breaker.mp4" style="font-size: 20px;" aria-hidden="true"></i>
+								<span class="tooltiptext">
+										click here to see the video
+								</span>
+							</span>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="bb-item" id="item2"></div>
+			<div class="bb-item" id="item3"></div>
+			<div class="bb-item" id="item4"></div>
+			<div class="bb-item" id="item5"></div>
+			<div class="bb-item" id="item6"></div>
+			<div class="bb-item" id="item7"></div>
+			<div class="bb-item" id="item8"></div>
+			<div class="bb-item" id="item9"></div>
+			<div class="bb-item" id="item10"></div>
+			<div class="bb-item" id="item11"></div>
+			<div class="bb-item" id="item12"></div>
+			<div class="bb-item" id="item13"></div>
+			<div class="bb-item" id="item14"></div>
+			<div class="bb-item" id="item15"></div>
+			<div class="bb-item" id="item16"></div>
+			<div class="bb-item" id="item17"></div>
+			<div class="bb-item" id="item18"></div>
+			<div class="bb-item" id="item19"></div>
+			<div class="bb-item" id="item20"></div>
+			<div class="bb-item" id="item21"></div>
+			<div class="bb-item" id="item22"></div>
+			<div class="bb-item" id="item23"></div>
+			<div class="bb-item" id="item24"></div>
+			<div class="bb-item" id="item25"></div>
+			<div class="bb-item" id="item26"></div>
+			<div class="bb-item" id="item27"></div>
+			<div class="bb-item" id="item28"></div>
+			<div class="bb-item" id="item29"></div>
+			<div class="bb-item" id="item30"></div>
+			<div class="bb-item" id="item31"></div>
+			<div class="bb-item" id="item32"></div>
+			<div class="bb-item" id="item33"></div>
+			<div class="bb-item" id="item34"></div>
+			<div class="bb-item" id="item35"></div>
+			<div class="bb-item" id="item36"></div>
+			<div class="bb-item" id="item37"></div>
+			<div class="bb-item" id="item38"></div>
+			<div class="bb-item" id="item39"></div>
+			<div class="bb-item" id="item40"></div>
+			<div class="bb-item" id="item41"></div>
+			<div class="bb-item" id="item42"></div>
+			<div class="bb-item" id="item43"></div>
+			<div class="bb-item" id="item44"></div>
+			<div class="bb-item" id="item45"></div>
+			<div class="bb-item" id="item46"></div>
+			<div class="bb-item" id="item47"></div>
+			<div class="bb-item" id="item48"></div>
+			<div class="bb-item" id="item49"></div>
+		</div>
+		<div id="imgModal" class="modal">
+			<span class="close">&times;</span>
+			<img style="width: 100%; height:90% " class="modal-content" id="imgContent1">
+			<!--<img style="width: 60%; height:50% " class="modal-content" id="imgContent2">-->
+			<div id="caption"></div>
+		</div>
+
+		<div id="videoModal" class="modal">
+			<span class="closevid">&times;</span>
+			<video width="60%" height="80%" class="modal-content" id="videoContent"  controls>
+				<source type="video/mp4" >
+			</video>
+		</div>
+
+		<span class="highlighttext">
+			<span class="closeh">&times;</span>
+			<button type="button" id='highlightBtn'>Highlight</button>
+		</span>
+
+		<!--<div id="xxxx">-->
+			<!--<audio id="audiocontent" style="display: none;" controls class="audio">-->
+				<!--<source type="audio/mpeg">Your browser does not support the audio element.-->
+			<!--</audio>-->
+		<!--</div>-->
+
+
+		<nav>
+			<div>
+				<span id="bb-nav-prev">&larr;</span>
+				<span id="bb-nav-next">&rarr;</span>
+			</div>
+			
+
+			<div style="margin-left: 100px; margin-top: 5px;">
+				<input type="number" name="jumpPageNo" id="jumpPageNo">
+				<button type="button" id="test-button">Jump Page</button>
+			</div>
+			
+		</nav>
+
+
+
+		<span id="tblcontents" class="menu-button">Table of Contents</span>
+
+	</div>
+
+</div><!-- /container -->
+
+<script>
+    var nextNo = 1;
+    var stickyNotesInfo = [];
+    var stickyId = '';
+    var minItem = 1;
+    var maxItem = 49;
+
+    if (typeof(Storage) !== "undefined") {
+        stickyNotesInfo = JSON.parse(localStorage.getItem("stickyNotesInfo"));
+        if(stickyNotesInfo == null){
+            stickyNotesInfo = [];
+            localStorage.setItem("stickyNotesInfo", JSON.stringify(stickyNotesInfo));
+        }
+    } else {
+        localStorage.setItem("stickyNotesInfo", JSON.stringify(stickyNotesInfo));
+    }
+
+    var stickyNoteCurrent = 1;
+    // Get the modal
+    var modal = document.getElementById('imgModal');
+    var vidmodal = document.getElementById('videoModal');
+    var highlightb = document.getElementsByClassName('highlighttext');
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var span1 = document.getElementsByClassName("closevid")[0];
+    var span2 = document.getElementsByClassName("closeh")[0];
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    span2.onclick = function() {
+        $(".highlighttext").css("display", "none");
+    }
+
+    span1.onclick = function () {
+        $('#videoContent').attr('src','');
+        vidmodal.style.display = "none";
+
+    }
+</script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.mousewheel.js"></script>
+<script src="js/jquery.jscrollpane.min.js"></script>
+<script src="js/jquerypp.custom.js"></script>
+<script src="js/jquery.bookblock.js"></script>
+<script src="js/page.js"></script>
+<script src="js/jquery.postitall.js"></script>
+<!-- load json data for detect chapter by page -->
+<script src="json/data.json"></script>
+
+<script>
+
+    var grange;
+    var gselected ;
+
+    $.fn.postitall.globals = {
+        prefix          : '#PIApostit_',//Id note prefixe
+        filter          : 'domain',     //Options: domain, page, all
+        savable         : true,        //Save postit in storage
+        randomColor     : true,         //Random color in new postits
+        toolbar         : true,         //Show or hide toolbar
+        autoHideToolBar : true,         //Animation effect on hover over postit showing/hiding toolbar options
+        removable       : false,         //Set removable feature on or off
+        askOnDelete     : true,         //Confirmation before note removal
+        draggable       : true,         //Set draggable feature on or off
+        resizable       : true,         //Set resizable feature on or off
+        editable        : true,         //Set contenteditable and enable changing note content
+        changeoptions   : true,         //Set options feature on or off
+        blocked         : true,         //Postit can not be modified
+        minimized       : true,         //true = minimized, false = maximixed
+        expand          : true,         //Expand note
+        fixed           : true,         //Allow to fix the note in page
+        addNew          : true,         //Create a new postit
+        showInfo        : true,         //Show info icon
+        pasteHtml       : true,         //Allow paste html in contenteditor
+        htmlEditor      : true,         //Html editor (trumbowyg)
+        autoPosition    : true,         //Automatic reposition of the notes when user resizes the screen
+        addArrow        : 'back'        //Add an arrow to notes : none, front, back, all
+    };
+
+    $.fn.postitall.defaults = {
+        //Note properties
+        id              : "",                       //Note id
+        created         : Date.now(),               //Creation date
+        domain          : window.location.origin,   //Domain in the url
+        page            : window.location.pathname, //Page in the url
+        osname          : navigator.appVersion,     //Browser informtion & OS name
+        content         : '',                       //Content of the note (text or html)
+        position        : 'absolute',               //Position absolute or fixed
+        posX            : '60px',                   //x coordinate (from left)
+        posY            : '10px',                   //y coordinate (from top)
+        right           : '',                       //x coordinate (from right). This property invalidate posX
+        height          : 260,                      //Note total height
+        width           : 200,                      //Note total width
+        minHeight       : 210,                      //Note resizable min-width
+        minWidth        : 170,                      //Note resizable min-height
+        oldPosition     : {},                       //Position when minimized/collapsed (internal use)
+        //Config note style
+        style : {
+            tresd           : true,                 //General style in 3d format
+            backgroundcolor : '#FFFA3C',            //Background color in new postits when randomColor = false
+            textcolor       : '#333333',            //Text color
+            textshadow      : true,                 //Shadow in the text
+            fontfamily      : 'verdana',            //Default font
+            fontsize        : 'small',              //Default font size
+            arrow           : 'none',               //Default arrow : none, top, right, bottom, left
+        },
+        //Enable / Disable features
+        features : $.fn.postitall.globals,          //By default, copy of global defaults
+        //Note flags
+        flags : {
+            blocked         : false,                //If true, the note cannot be edited
+            minimized       : true,                //true = Collapsed note / false = maximixed
+            expand          : false,                //true = Expanded note / false = normal
+            fixed           : false,                //Set position fixed
+            highlight       : false,                //Higlight note
+        },
+        //Attach the note to al html element
+        attachedTo : {
+            element         : '',                   //Where to attach
+            position        : 'right',              //Position relative to elemente : top, right, bottom or left
+            fixed           : true,                 //Fix note to element when resize screen
+            arrow           : true,                 //Show an arrow in the inverse position
+        },
+        // Callbacks / Event Handlers
+        onCreated: function(id, options, obj) { return undefined; },    //Triggered after note creation
+        onChange: function (id) { return undefined; },                  //Triggered on each change
+        onSelect: function (id) { return undefined; },                  //Triggered when note is clicked, dragged or resized
+        onDblClick: function (id) { return undefined; },                //Triggered on double click
+        onRelease: function (id) { return undefined; },                 //Triggered on the end of dragging and resizing of a note
+        onDelete: function (id) { return undefined; }                   //Triggered when a note is deleted
+    };
+
+    $(document).ready(function(){
+
+        if(stickyNotesInfo[stickyNoteCurrent] === undefined){
+            $.PostItAll.new({
+                onCreated: function(id){
+                    stickyNotesInfo[stickyNoteCurrent] = {
+                        itemNo : nextNo,
+                        stickyId : id
+                    };
+                    localStorage.setItem("stickyNotesInfo", JSON.stringify(stickyNotesInfo));
+                }
+            });
+        }
+        else{
+            $.PostItAll.load();
+            setTimeout(function(){
+                for(var i = 0; i < stickyNotesInfo.length; i++){
+                    stickyId = stickyNotesInfo[i] != null ? stickyNotesInfo[i].stickyId : -1;
+                    if(stickyId != -1 && i != stickyNoteCurrent){
+                        $(stickyId).postitall('hide');
+                    }
+                }
+            },100);
+        }
+
+        $('.main-menu').click(function(){
+            $(this).children('.menu-toc').slideToggle();
+            $(this).children('.part-toc').slideToggle();
+		});
+
+        $('.sub-menu').click(function(event){
+            $(this).children('li').slideToggle();
+            event.stopImmediatePropagation();
+        });
+
+        $(document).on('click','.img-class',function(){
+            var imgSrc1 = $(this).attr('src');
+            var imgSrc2 = $(this).attr('srcb');
+            $('#imgContent1').attr('src',imgSrc2);
+//            $('#imgContent2').attr('src',imgSrc2);
+            $('#imgModal').fadeIn();
+        });
+
+        $(document).on('click','.video-class',function(){
+            var videoSrc = $(this).attr('videosrc');
+            $('#videoContent').attr('src',videoSrc);
+            $('#videoModal').fadeIn();
+
+        });
+
+        $(document).on("mouseup", function (e) {
+            var selected = getSelection();
+            var range = selected.getRangeAt(0);
+            grange= range;
+            gselected = selected;
+            if(selected.toString().length > 1){
+                var x = e.pageX;
+                var y = e.pageY;
+                placeTooltip(x, y);
+                $(".highlighttext").show();
+            }
+
+        });
+
+        $("#highlightBtn").click(function() {
+            var newNode = document.createElement("span");
+            newNode.setAttribute("class", "red");
+            grange.surroundContents(newNode);
+            $(".highlighttext").hide();
+            gselected.removeAllRanges();
+        });
+
+//        $( document ).on('mouseover','.tooltip_my', function() {
+//            var audioSrc = $(this).attr('audiosrc');
+//            if($(this).attr('audio-appended') == 'false'){
+//                console.log('OLD -> ' + $('#audiocontent').attr('src'));
+//                $('#audiocontent').attr('src',audioSrc);
+//                console.log('NEW -> ' + $('#audiocontent').attr('src'));
+//                $('#audiocontent').show();
+//                $(this).children('span:first').html($('#xxxx').html());
+//                $(this).attr('audio-appended','true')
+//			}
+//        });
+
+        function placeTooltip(x_pos, y_pos) {
+            $(".highlighttext").css({
+                top: y_pos + 'px',
+                left: x_pos + 'px',
+                position: 'absolute'
+            });
+        }
+
+        function getSelection() {
+            var seltxt = '';
+            if (window.getSelection) {
+                seltxt = window.getSelection();
+            } else if (document.getSelection) {
+                seltxt = document.getSelection();
+            } else if (document.selection) {
+                seltxt = document.selection.createRange().text;
+            }
+            else return;
+            return seltxt;
+        }
+
+
+    });
+
+</script>
+
+<script>
+    $(function() {
+
+        Page.init();
+
+    });
+</script>
+
+
+</body>
+</html>

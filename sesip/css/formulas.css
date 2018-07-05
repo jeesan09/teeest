@@ -1,0 +1,125 @@
+/*
+  formulas.css (C) 2011 by Corrado Cantelmi, version 0.14 [2011-08-23]
+
+  Original location of this file:
+    http://www.webalice.it/corrado.cantelmi/html/formulas/formulas.css
+
+  A complete explanation for these classes is found:
+    http://www.webalice.it/corrado.cantelmi/html/formulas/How_to_Write_Formulas_in_HTML_and_CSS.html
+
+  These classes are font-independent and browser independent.
+  -----------------------------------------------------------
+
+  Here is a short "how-to":
+  - X  Avoid splitting an inline
+       formula on two lines:         <span class="inlineformula">...your...formula...here...</span>
+  - H  Write both superscript and
+       subscript beside a variable:  variable<table class=supsub><tr><td>sup<br>sub</table>
+  - H  Write a fraction inline:      <table class=frac><tr><td>numerator<br>&#x2013;&#x2013;&#x2013;<br>denominator</table>
+  - H  Write a limit inline:         <table class=limittable><tr><td><span class=normalsize>lim</span><br>limit</table>&nbsp;function
+  - H  Write a summation, a product
+       or an integral inline:        <table class=big><tr><td>end<br><span class=bigmiddle>operator</span><br>start</table>rest
+  - X  Write a combination inline:   <table class=comb><tr><td class=bigmiddle>(<td class=bincoef>things<br>taken<td class=bigmiddle>)</table>
+  - X  Force the display of
+       Unicode character:            <span class=unicode>unicode_chars</span>
+  - X  Write a stand-alone formula
+       with its reference number:    <table class=numfor><tr><td class=numforleft>your_formula</td><td class=numforright>ref.number</td></table>
+  - X  Write a stand-alone formula
+       with the <pre>:               <pre class=preformula>
+                                         your
+                                             formula
+                                                     here
+                                     </pre>
+
+   'H' = works in "HTML 4.01 Transitional" only, NOT in XHTML
+   'X' = works in "HTML 4.01 Transitional" and in "XHTML 1.0 Transitional" too
+        Obviously, in XHTML you have to use the double quotes for class names and close each <td>, <tr>, etc.
+*/
+
+
+.inlineformula, .inlineformula .supsub, .inlineformula .big, .inlineformula .frac {   /* Used to avoid the inline formulas wrapped across lines */
+	white-space: nowrap;    /* OK for Opera 10-11, Firefox 3-4, IE8, Chrome 13, Safari for iPad */
+}
+
+.supsub, .frac, .limittable, .big, .inlineformula .supsub, .comb {     /* generic class (two vertical cells) for inline polynomials */ 
+	border-collapse: collapse;
+	margin:          0 0.1em 0 0.05em;
+	font-size:       80%;
+	position:        relative;
+	bottom:          -0.6em;
+	line-height:      1.1em;
+	display:         inline;
+	text-indent:     0em;           /* Needed by Chrome which inherits any indentation from the parent <p> */
+}
+
+.bigmiddle {
+	font-size:  250%;               /* SIGMA, PI, integral sign must be much greater than other chars */
+	line-height: 1.2em;
+}
+
+.big {
+	text-align:   center;
+	bottom:      -2em;
+}
+
+.comb {                           /* used for "combinations" */
+	text-align:   center;
+	bottom:      -1em;
+	line-height: 1.2em;
+}
+
+.bincoef {                        /* used for the binary coefficients inside the big ( and ) */
+	padding-top: 0.3em;
+	line-height: 1.5em;
+}
+
+.frac {                           /* centered text and different positioning for inline fractions
+                                     using multiple &#x2013; chars for the fraction line*/
+	text-align:   center;
+	line-height:  0.9em;    /* line-height can't be less than 0.9, otherwise descending letters (gpqy) in the denominator can be cut (IE) */
+	bottom:      -1.0em;
+}
+
+.limittable {                     /* class (two vertical cells) for "lim" over "x->0" */
+	bottom:      -1.1em;
+	text-align:  center;
+}
+
+.normalsize {
+	font-size:  125%;               /* the 'lim' word should be at 100%; this compensates for the 80% in "supsub" */
+}
+
+.supsub td {
+	padding:   0;
+}
+
+.numfor {                         /* Used for centered formulas with the reference number on the right */
+	text-indent:   0em;
+	width: 95%;
+	border-collapse: collapse;
+}
+
+.numfor td {
+	padding: 0 0 0 0;
+}
+
+.numforleft {                     /* Used for "numfor" left cell */
+	width: 95%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.numfor pre, .preformula {         /* Used for "numfor" left cell (if "PRE" is used) */
+	line-height: 0.7em;
+}
+
+.numforright {                    /* Used for "numfor" right cell (formula reference number) */
+	text-align: right;
+	vertical-align: middle;
+}
+
+.unicode {                        /* Used to force displaying Unicode chars  */
+	font-family: "arial unicode ms", arial, AppleGothic;
+}
+
+
